@@ -7,33 +7,67 @@ class ZeroSubset
     //repeating the same subset several times is not a problem. 
     static void Main(string[] args)
     {
+        //The implementation is not ready! Still a lot of work to do! Still not working correctly!
         int[] numbers = new int[5];
+        int sum = 0;
         for (int i = 0; i < numbers.Length; i++)
         {
             Console.WriteLine("Enter an integer:");
             int num = int.Parse(Console.ReadLine());
             numbers[i] = num;
+            sum += num;
         }
 
-        int sum = 0;
-        List<string> subsets = new List<string>();
+        int checkSum;
         for (int i = 0; i < numbers.Length; i++)
         {
-            sum = numbers[i];
-            subsets.Add(sum.ToString());
+            checkSum = sum - numbers[i];
+            if (checkSum == 0)
+            {
+                PrintNumber(numbers, i, 0);
+            }
             for (int j = i; j < numbers.Length; j++)
             {
                 if (i != j)
                 {
-                    sum += numbers[j];
-                    subsets[i] = subsets[i] + "+" + numbers[j].ToString();
-                    if (sum == 0)
+                    checkSum -= numbers[j];
+                    if (checkSum == 0)
                     {
-                        
+                        PrintNumber(numbers, j, i);
+                    }
+                    for (int n = j; n < numbers.Length; n++)
+                    {
+                        if (j != n)
+                        {
+                            checkSum -= numbers[n];
+                            if (checkSum == 0)
+                            {
+                                PrintNumber(numbers, n, j);
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+    private static void PrintNumber(int[] numbers, int j, int start)
+    {
+        for (int w = start; w < numbers.Length; w++)
+        {
+            if (w != j)
+            {
+                if (w == numbers.Length-1)
+                {
+                    Console.Write(numbers[w] + "= 0");
+                }
+                else
+                {
+                    Console.Write(numbers[w] + "+");
+                }
+            }
+        }
+        Console.WriteLine();
     }
 }
 
